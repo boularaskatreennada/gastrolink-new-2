@@ -23,7 +23,7 @@ class Manager(models.Model):
     password = models.CharField(max_length=128)
     created_at = models.DateField(auto_now_add=True)
     status = models.CharField(max_length=10, choices=EmployeeStatus.choices)
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
+    restaurant = models.OneToOneField(Restaurant, on_delete=models.CASCADE, related_name='manager')
 
 class Chef(models.Model):
     name = models.CharField(max_length=100)

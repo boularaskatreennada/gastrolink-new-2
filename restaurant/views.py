@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Restaurant
 from .forms import *
 
-def restaurant_list(request):
+def restaurant_list(request): 
     selected_city = request.GET.get('city')
     if selected_city:
         restaurants = Restaurant.objects.filter(city=selected_city)

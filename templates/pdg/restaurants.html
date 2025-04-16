@@ -13,15 +13,6 @@
 <div class="main bg-white">
   <nav class="navbar navbar-expand px-1 py-1 bg-basic">
     <h6 class="fw-bold">Restaurants Management</h6>
-    <div class="navbar-collapse collapse">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item dropdown">
-          <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
-            <img src="{% static 'images/téléchargement.jpg' %}" class="avatar img-fluid rounded-circle border border-dark" alt="">
-          </a>
-        </li>
-      </ul>
-    </div>
   </nav>
 
   <main class="content px-3 py-1">
@@ -59,7 +50,7 @@
             <tr>
               <td>{{ restaurant.name }}</td>
               <td>{{ restaurant.address }}</td>
-              <td>{{ restaurant.manager }}</td>
+              <td>{{ restaurant.manager.name }}</td>
               <td>{{ restaurant.phone }}</td>
               <td>{{ restaurant.email }}</td>
               <td class="d-flex justify-content-between">
