@@ -43,7 +43,7 @@ def delete_restaurant(request, pk):
     if request.method == 'POST':
         restaurant.delete()
         return redirect('restaurants')
-    return render(request, 'pdg/restDeleteconfirm.html', {'restaurant': restaurant})
+    return render(request, 'pdg/restaurants.html', {'restaurant': restaurant})
 
 def add_employee(request):
     if request.method == 'POST':

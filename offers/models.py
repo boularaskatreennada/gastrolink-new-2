@@ -12,4 +12,8 @@ class Offer(models.Model):
     end_date = models.DateField()
     discount = models.FloatField()
     code = models.CharField(max_length=50, unique=True)
+    uses = models.PositiveIntegerField(default=0)
     status = models.CharField(max_length=10, choices=OfferStatus.choices)
+
+    def __str__(self):
+        return self.title

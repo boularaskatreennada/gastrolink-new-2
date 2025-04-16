@@ -3,7 +3,7 @@
     --secondColor:#F8E3A2;
 }
 body {
-    height: 110vh;
+    height:fit-content;
     display: flex;
     justify-content: center;
     align-items: start;
@@ -25,7 +25,7 @@ body {
     box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
     max-width: 700px;
     width: 100%;
-    margin: 2rem;
+    margin: .5rem;
     height: auto;
 }
 .form-title {
@@ -39,8 +39,8 @@ body {
     margin-bottom: 15px;
     border-radius: 10px;
 }
-.form-photo{
-
+.text-area{
+    height:6rem;
 }
 .btn-cancel {
     background-color: white;

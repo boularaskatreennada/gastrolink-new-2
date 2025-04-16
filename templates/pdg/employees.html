@@ -51,8 +51,11 @@
               
               <td class="d-flex justify-content-evenly align-items-center">
                 <a href="{% url 'edit_employee' 'manager' manager.id %}" class="text-success">edit <i class="fa-solid fa-user-pen"></i></a>
-                <a href="{% url 'delete_employee' 'manager' manager.id %}" class="text-danger">delete <i class="fa-solid fa-user-xmark"></i></a> 
-             </td>
+                <form action="{% url 'delete_employee' 'manager' manager.id %}" method="post" onsubmit="return confirm('Are you sure?');">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-link text-danger p-0 m-0">Delete</button>
+                </form>
+              </td>
             </tr>
             
             {% endfor %}
@@ -81,8 +84,11 @@
               
               <td class="d-flex justify-content-evenly align-items-center">
                 <a href="{% url 'edit_employee' 'supplier' supplier.id %}" class="text-success">edit <i class="fa-solid fa-user-pen"></i></a>
-                <a href="{% url 'delete_employee' 'supplier' supplier.id %}" class="text-danger">delete <i class="fa-solid fa-user-xmark"></i></a> 
-             </td>
+                <form action="{% url 'delete_employee' 'supplier' supplier.id %}" method="post" onsubmit="return confirm('Are you sure?');">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-link text-danger p-0 m-0">Delete</button>
+                </form>
+              </td>
             </tr>
             {% endfor %}
           </tbody>

@@ -12,10 +12,7 @@
 {% block content %}
 <div class="main bg-white" >
   <nav class="navbar navbar-expand px-1 bg-basic">
-      <h6 class="fw-bold">
-          Offers management
-      </h6>
-    
+      <h6 class="fw-bold">Offers management</h6>
   </nav>
 
   <main class="content px-3 py-1">
@@ -30,167 +27,163 @@
         <a href="{% url 'add_offer' %}" id="btn">Add<span>+</span></a>
       </div>
 
-      <div class="table-responsive " id="All">
+      <div class="table-responsive" id="All">
         <table id="All-table" class="table table-striped border" style="width:100%">
           <thead>
-              <tr>
-                <th>name</th>
-                <th>start</th>
-                <th>end</th>
-                <th>per</th>
-                <th>status</th>
-                <th>uses</th>
-                <th>Ops</th>
-              </tr>
+            <tr>
+              <th>name</th>
+              <th>start</th>
+              <th>end</th>
+              <th>per</th>
+              <th>status</th>
+              <th>uses</th>
+              <th>Ops</th>
+            </tr>
           </thead>
           <tbody>
-            <tr>
-                <td>Weekend Sextood Special</td>
-                <td>07/03/2025</td>
-                <td>20/03/2025</td>
-                <td>10%</td>
-                <td><span class="badge text-success">Active</span></td>
-                <td>20</td>
+            {% for offer in all_offers %}
+              <tr>
+                <td>{{ offer.title }}</td>
+                <td>{{ offer.start_date }}</td>
+                <td>{{ offer.end_date }}</td>
+                <td>{{ offer.discount }}%</td>
+                <td>
+                  {% if offer.status == 'active' %}<span class="badge text-success">Active</span>
+                  {% elif offer.status == 'upcoming' %}<span class="badge text-primary">Upcoming</span>
+                  {% else %}<span class="badge text-danger">Expired</span>
+                  {% endif %}
+                </td>
+                <td>{{ offer.uses }}</td>
                 <td class="d-flex justify-content-evenly align-items-center">
-                    <a href="" class="text-success"><i class="fa-solid fa-pen"></i></a>
-                    <a href="#" class="text-danger"><i class="fa-solid fa-trash"></i></a>
-                 </td>
-            </tr>
-            <tr>
-                <td>Buy One Get One Free Pizza</td>
-                <td>01/04/2025</td>
-                <td>09/04/2025</td>
-                <td>BOGO</td>
-                <td><span class="badge text-primary">Upcoming</span></td>
-                <td>-</td>
-                <td class="d-flex justify-content-evenly align-items-center">
-                    <a href="" class="text-success"><i class="fa-solid fa-pen"></i></a>
-                    <a href="#" class="text-danger"><i class="fa-solid fa-trash"></i></a> 
-                 </td>
-            </tr>
-
-            <tr>
-                <td>Happy hour drink</td>
-                <td>01/03/2025</td>
-                <td>30/03/2025</td>
-                <td>50%</td>
-                <td><span class="badge text-danger">Expired</span></td>
-                <td>100</td>
-                <td class="d-flex justify-content-evenly align-items-center">
-                    <a href="" class="text-success"><i class="fa-solid fa-pen"></i></a>
-                    <a href="#" class="text-danger"><i class="fa-solid fa-trash"></i></a> 
-                 </td>
-            </tr>
-
+                  <a href="{% url 'edit_offer' offer.id %}" class="text-success"><i class="fa-solid fa-pen"></i></a>
+                  <form action="{% url 'delete_offer' offer.id %}" method="post" onsubmit="return confirm('Are you sure?');">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-link text-danger p-0 m-0">Delete</button>
+                </form>
+                </td>
+              </tr>
+            {% empty %}
+              <tr><td colspan="7">No offers available.</td></tr>
+            {% endfor %}
           </tbody>
         </table>
       </div>
 
-
-
-      <div class="table-responsive " id="Active">
+      <div class="table-responsive" id="Active">
         <table id="active-table" class="table table-striped border" style="width:100%">
           <thead>
-              <tr>
-                <th>name</th>
-                <th>start</th>
-                <th>end</th>
-                <th>per</th>
-                <th>status</th>
-                <th>uses</th>
-                <th>Ops</th>
-              </tr>
+            <tr>
+              <th>name</th>
+              <th>start</th>
+              <th>end</th>
+              <th>per</th>
+              <th>status</th>
+              <th>uses</th>
+              <th>Ops</th>
+            </tr>
           </thead>
           <tbody>
-            <tr>
-                <td>Weekend Sextood Special</td>
-                <td>07/03/2025</td>
-                <td>20/03/2025</td>
-                <td>10%</td>
+            {% for offer in active_offers %}
+              <tr>
+                <td>{{ offer.title }}</td>
+                <td>{{ offer.start_date }}</td>
+                <td>{{ offer.end_date }}</td>
+                <td>{{ offer.discount }}%</td>
                 <td><span class="badge text-success">Active</span></td>
-                <td>20</td>
+                <td>{{ offer.uses }}</td>
                 <td class="d-flex justify-content-evenly align-items-center">
-                    <a href="" class="text-success"><i class="fa-solid fa-pen"></i></a>
-                    <a href="#" class="text-danger"><i class="fa-solid fa-trash"></i></a>
-                 </td>
-            </tr>
-
+                  <a href="{% url 'edit_offer' offer.id %}" class="text-success"><i class="fa-solid fa-pen"></i></a>
+                  <form action="{% url 'delete_offer' offer.id %}" method="post" onsubmit="return confirm('Are you sure?');">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-link text-danger p-0 m-0">Delete</button>
+                  </form>  
+                </td>
+              </tr>
+            {% empty %}
+              <tr><td colspan="7">No active offers available.</td></tr>
+            {% endfor %}
           </tbody>
         </table>
       </div>
 
-
-      <div class="table-responsive " id="upcoming">
+      <div class="table-responsive" id="upcoming">
         <table id="upcoming-table" class="table table-striped border" style="width:100%">
           <thead>
-              <tr>
-                <th>name</th>
-                <th>start</th>
-                <th>end</th>
-                <th>per</th>
-                <th>status</th>
-                <th>uses</th>
-                <th>Ops</th>
-              </tr>
+            <tr>
+              <th>name</th>
+              <th>start</th>
+              <th>end</th>
+              <th>per</th>
+              <th>status</th>
+              <th>uses</th>
+              <th>Ops</th>
+            </tr>
           </thead>
           <tbody>
-            <tr>
-                <td>Buy One Get One Free Pizza</td>
-                <td>01/04/2025</td>
-                <td>09/04/2025</td>
-                <td>BOGO</td>
+            {% for offer in upcoming_offers %}
+              <tr>
+                <td>{{ offer.title }}</td>
+                <td>{{ offer.start_date }}</td>
+                <td>{{ offer.end_date }}</td>
+                <td>{{ offer.discount }}%</td>
                 <td><span class="badge text-primary">Upcoming</span></td>
-                <td>-</td>
+                <td>{{ offer.uses }}</td>
                 <td class="d-flex justify-content-evenly align-items-center">
-                    <a href="" class="text-success"><i class="fa-solid fa-pen"></i></a>
-                    <a href="#" class="text-danger"><i class="fa-solid fa-trash"></i></a> 
-                 </td>
-            </tr>
-
-            
-
+                  <a href="{% url 'edit_offer' offer.id %}" class="text-success"><i class="fa-solid fa-pen"></i></a>
+                  <form action="{% url 'delete_offer' offer.id %}" method="post" onsubmit="return confirm('Are you sure?');">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-link text-danger p-0 m-0">Delete</button>
+                </form>  
+                </td>
+              </tr>
+            {% empty %}
+              <tr><td colspan="7">No upcoming offers available.</td></tr>
+            {% endfor %}
           </tbody>
         </table>
       </div>
 
-      <div class="table-responsive " id="expired">
+      <div class="table-responsive" id="expired">
         <table id="expired-table" class="table table-striped border" style="width:100%">
           <thead>
-              <tr>
-                <th>name</th>
-                <th>start</th>
-                <th>end</th>
-                <th>per</th>
-                <th>status</th>
-                <th>uses</th>
-                <th>Ops</th>
-              </tr>
+            <tr>
+              <th>name</th>
+              <th>start</th>
+              <th>end</th>
+              <th>per</th>
+              <th>status</th>
+              <th>uses</th>
+              <th>Ops</th>
+            </tr>
           </thead>
           <tbody>
-            <tr>
-                <td>Happy hour drink</td>
-                <td>01/03/2025</td>
-                <td>30/03/2025</td>
-                <td>50%</td>
+            {% for offer in expired_offers %}
+              <tr>
+                <td>{{ offer.title }}</td>
+                <td>{{ offer.start_date }}</td>
+                <td>{{ offer.end_date }}</td>
+                <td>{{ offer.discount }}%</td>
                 <td><span class="badge text-danger">Expired</span></td>
-                <td>100</td>
+                <td>-</td>
                 <td class="d-flex justify-content-evenly align-items-center">
-                    <a href="" class="text-success"><i class="fa-solid fa-pen"></i></a>
-                    <a href="#" class="text-danger"><i class="fa-solid fa-trash"></i></a> 
-                 </td>
-            </tr>
-
+                  <a href="{% url 'edit_offer' offer.id %}" class="text-success"><i class="fa-solid fa-pen"></i></a>
+                  <form action="{% url 'delete_offer' offer.id %}" method="post" onsubmit="return confirm('Are you sure?');">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-link text-danger p-0 m-0">Delete</button>
+                </form> 
+                </td>
+              </tr>
+            {% empty %}
+              <tr><td colspan="7">No expired offers available.</td></tr>
+            {% endfor %}
           </tbody>
         </table>
       </div>
 
-</div>
-     
-
-      
+    </div>
   </main>
 </div>
- 
+
 <script defer src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script defer src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
 <script defer src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.js"></script>
