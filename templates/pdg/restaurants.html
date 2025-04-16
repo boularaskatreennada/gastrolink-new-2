@@ -29,12 +29,14 @@
       <div class="d-flex justify-content-between align-items-center mb-3">
         <div class="d-flex flex-column">
           <h6 class="me-3">Choose a city</h6>
-          <select class="form-select w-auto" aria-label="City filter">
-            <option selected>City ...</option>
-            <option value="1">City A</option>
-            <option value="2">City B</option>
-            <option value="3">City C</option>
-          </select>
+          <form method="get">
+            <select class="form-select w-auto" name="city" onchange="this.form.submit()">
+              <option value="">City ...</option>
+              {% for city in cities %}
+                <option value="{{ city }}" {% if city == selected_city %}selected{% endif %}>{{ city }}</option>
+              {% endfor %}
+            </select>
+          </form>          
         </div>
         <a href="{% url 'add_restaurant' %}" id="btn">Add<span>+</span></a>
       </div>
@@ -61,7 +63,8 @@
               <td>{{ restaurant.phone }}</td>
               <td>{{ restaurant.email }}</td>
               <td class="d-flex justify-content-between">
-                <a href="{% url 'edit_restaurant' restaurant.id %}" class="text-warning me-2">Edit</a>
+                <a href="" class="text-primary me-2">Informations</a>
+                <a href="{% url 'edit_restaurant' restaurant.id %}" class="text-success me-2">Edit</a>
                 <form action="{% url 'delete_restaurant' restaurant.id %}" method="post" onsubmit="return confirm('Are you sure?');">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-link text-danger p-0 m-0">Delete</button>

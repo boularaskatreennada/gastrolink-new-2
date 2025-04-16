@@ -1,7 +1,9 @@
-new DataTable('#managers-table');
-new DataTable('#suppliers-table');
 
 document.addEventListener("DOMContentLoaded", function () {
+
+    new DataTable('#managers-table');
+    new DataTable('#suppliers-table');
+
     const managersBtn = document.getElementById("managers-btn");
     const suppliersBtn = document.getElementById("suppliers-btn");
     const managerTable = document.getElementById("manager");

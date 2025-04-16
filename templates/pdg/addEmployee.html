@@ -1,65 +1,89 @@
 {% extends 'pdg/baseform.html' %}
-{% load static%}
+{% load static %}
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'styles/pdg/addMang.css' %}">
 {% endblock %}
 
-
 {% block titlee %}
-   <h4 class="form-title">Add a new member to GastroLink </h4>
+   <h4 class="form-title">Add a new member to GastroLink</h4>
 {% endblock %}
-{% block content %}
-    <form method="post" enctype="multipart/form-data" class="w-100">
-        {% csrf_token %}
-        <div class="row">
-            <!-- Left side: inputs -->
-            <div class="col-md-7">
-                <div class="icon-input mb-3">
-                    <i class="fa-solid fa-user"></i>
-                    {{ form.full_name }}
-                </div>
-                <div class="icon-input mb-3">
-                    <i class="fa-solid fa-envelope"></i>
-                    {{ form.email }}
-                </div>
-                <div class="icon-input mb-3">
-                    <i class="fa-solid fa-phone"></i>
-                    {{ form.phone }}
-                </div>
-                <div class="icon-input mb-3">
-                    <i class="fa-solid fa-lock"></i>
-                    {{ form.password }}
-                </div>
-                <div class="icon-input mb-3">
-                    <i class="fa-solid fa-location-pin"></i>
-                    {{ form.address }}
-                </div>
-                <div class="icon-input mb-3">
-                    <i class="fa-solid fa-user-tie"></i>
-                    {{ form.role }}
-                </div>
-                <div class="icon-input mb-3">
-                    <i class="fa-solid fa-utensils"></i>
-                    {{ form.restaurant }}
-                </div>
-            </div>
 
-            <div class="col-md-5 d-flex flex-column align-items-center justify-content-between">
-                <label for="id_photo" class="upload-area position-relative">
-                    <img id="previewImage" class="w-100 h-100 rounded-circle" alt="Preview">
-                    <div class="d-flex flex-column align-items-center justify-content-center">
-                        <i class="fa-solid fa-cloud-arrow-up"></i>
-                        <p>upload image</p>
-                    </div>
-                   
-                </label>
-                {{ form.photo }}
-                <div class="buttons">
-                    <a href="{% url 'employees' %}" class="btn btn-outline btn1_color">Cancel</a>
-                    <button type="submit" class="btn btn2_color">Add</button>
-                </div>
+{% block content %}
+<form method="post" enctype="multipart/form-data" class="w-100">
+    {% csrf_token %}
+    <div class="row">
+        <!-- Left side: inputs -->
+        <div class="col-md-7">
+            <div class="icon-input mb-3">
+                <i class="fa-solid fa-user"></i>
+                {{ form.full_name }}
+            </div>
+            <div class="icon-input mb-3">
+                <i class="fa-solid fa-envelope"></i>
+                {{ form.email }}
+            </div>
+            <div class="icon-input mb-3">
+                <i class="fa-solid fa-phone"></i>
+                {{ form.phone }}
+            </div>
+            <div class="icon-input mb-3">
+                <i class="fa-solid fa-user-tie"></i>
+                {{ form.role }}
+            </div>
+            <div class="icon-input mb-3">
+                <i class="fa-solid fa-location-pin"></i>
+                {{ form.address }}
+            </div>
+     
+            <!-- This field should be shown ONLY if role == manager -->
+            <div class="icon-input mb-3 manager-only d-none">
+                <i class="fa-solid fa-utensils"></i>
+                {{ form.restaurant }}
+            </div>
+            <div class="icon-input mb-3 manager-only d-none">
+                <i class="fa-solid fa-lock"></i>
+                {{ form.password }}
+            </div>
+            <div class="icon-input mb-3 manager-only d-none">
+                <i class="fa-solid fa-lock"></i>
+                {{ form.status }}
             </div>
         </div>
-    </form>
+
+        <div class="buttons">
+            <a href="{% url 'employee_list' %}" class="btn btn-outline btn1_color">Cancel</a>
+            <button type="submit" class="btn btn2_color">Add</button>
+        </div>
+            
+        </div>
+    </div>
+</form>
+<script>
+     document.addEventListener('DOMContentLoaded', function () {
+    const roleSelect = document.querySelector('[name="role"]');
+    const statusSelect = document.querySelector('[name="status"]');
+    const passwordField = document.querySelector('[name="password"]').closest('.icon-input');
+    const addressField = document.querySelector('[name="address"]').closest('.icon-input');
+    const restaurantField = document.querySelector('.manager-only');
+
+    function toggleFields() {
+        const role = roleSelect.value;
+        if (role === 'manager') {
+            passwordField.classList.remove('d-none');
+            restaurantField.classList.remove('d-none');
+            statusSelect.classList.remove('d-none');
+            addressField.classList.add('d-none');
+        } else if (role === 'supplier') {
+            passwordField.classList.add('d-none');
+            restaurantField.classList.add('d-none');
+            statusSelect.classList.add('d-none');
+            addressField.classList.remove('d-none');
+        }
+    }
+
+    toggleFields(); // Initial
+    roleSelect.addEventListener('change', toggleFields);
+});
+</script>
 
 {% endblock %}

@@ -52,28 +52,19 @@
           </thead>
           <tbody>
             <tr>
-              <td>nada nada</td>
-              <td style="text-align: left;">0547835249 </td>
-              <td>nada@gmail.com</td>
-              <td>restaurantA</td>
+              {% for manager in managers %}
+              <td>{{ manager.name }}</td>
+              <td>{{ manager.phone }}</td>
+              <td>{{ manager.email }}</td>
+              <td>{{ manager.restaurant}}</td>
               
               <td class="d-flex justify-content-evenly align-items-center">
-                <a href="" class="text-success">edit <i class="fa-solid fa-user-pen"></i></a>
-                <a href="#" class="text-danger">delete <i class="fa-solid fa-user-xmark"></i></a> 
+                <a href="{% url 'edit_employee' 'manager' manager.id %}" class="text-success">edit <i class="fa-solid fa-user-pen"></i></a>
+                <a href="{% url 'delete_employee' 'manager' manager.id %}" class="text-danger">delete <i class="fa-solid fa-user-xmark"></i></a> 
              </td>
             </tr>
-            <tr>
-                <td>nada nada</td>
-                <td style="text-align: left;">0547835249 </td>
-                <td>nada@gmail.com</td>
-                <td>restaurantA</td>
-                
-                <td class="d-flex justify-content-evenly align-items-center">
-                    <a href="" class="text-success">edit <i class="fa-solid fa-user-pen"></i></a>
-                    <a href="#" class="text-danger">delete <i class="fa-solid fa-user-xmark"></i></a> 
-                 </td>
-              </tr>
-
+            
+            {% endfor %}
           </tbody>
         </table>
       </div>
@@ -85,34 +76,24 @@
                   <th>name</th>
                   <th style="text-align: left;">phone</th>
                   <th>email</th>
-                  <th>restaurant</th>
+                  <th>address</th>
                   <th>operations</th>
               </tr>
           </thead>
           <tbody>
             <tr>
-              <td>lina lina</td>
-              <td style="text-align: left;">0547835249 </td>
-              <td>lina@gmail.com</td>
-              <td>restaurantA</td>
+              {% for supplier in suppliers %}
+              <td>{{ supplier.name }}</td>
+              <td>{{ supplier.phone }}</td>
+              <td>{{ supplier.email }}</td>
+              <td>{{ supplier.address}}</td>
               
               <td class="d-flex justify-content-evenly align-items-center">
-                <a href="" class="text-success">edit <i class="fa-solid fa-user-pen"></i></a>
-                <a href="#" class="text-danger">delete <i class="fa-solid fa-user-xmark"></i></a> 
+                <a href="{% url 'edit_employee' 'supplier' supplier.id %}" class="text-success">edit <i class="fa-solid fa-user-pen"></i></a>
+                <a href="{% url 'delete_employee' 'supplier' supplier.id %}" class="text-danger">delete <i class="fa-solid fa-user-xmark"></i></a> 
              </td>
             </tr>
-            <tr>
-                <td>lina lina</td>
-                <td style="text-align: left;">0547835249 </td>
-                <td>lina@gmail.com</td>
-                <td>restaurantA</td>
-                
-                <td class="d-flex justify-content-evenly align-items-center">
-                <a href="" class="text-success">edit <i class="fa-solid fa-user-pen"></i></a>
-                <a href="#" class="text-danger">delete <i class="fa-solid fa-user-xmark"></i></a> 
-             </td>
-              </tr>
-         
+            {% endfor %}
           </tbody>
         </table>
       </div>

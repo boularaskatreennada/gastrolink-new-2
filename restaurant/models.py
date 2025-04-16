@@ -21,7 +21,7 @@ class Manager(models.Model):
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=20)
     password = models.CharField(max_length=128)
-    created_at = models.DateField()
+    created_at = models.DateField(auto_now_add=True)
     status = models.CharField(max_length=10, choices=EmployeeStatus.choices)
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
 
@@ -30,7 +30,7 @@ class Chef(models.Model):
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=20)
     password = models.CharField(max_length=128)
-    created_at = models.DateField()
+    created_at = models.DateField(auto_now_add=True)
     status = models.CharField(max_length=10, choices=EmployeeStatus.choices)
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
 
@@ -39,7 +39,7 @@ class Server(models.Model):
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=20)
     password = models.CharField(max_length=128)
-    created_at = models.DateField()
+    created_at = models.DateField(auto_now_add=True)
     status = models.CharField(max_length=10, choices=EmployeeStatus.choices)
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
 
@@ -48,6 +48,16 @@ class DeliveryPerson(models.Model):
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=20)
     password = models.CharField(max_length=128)
-    created_at = models.DateField()
+    created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=10, choices=EmployeeStatus.choices)
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
+
+class Supplier(models.Model):
+    name = models.CharField(max_length=100)
+    phone = models.CharField(max_length=20)
+    email = models.EmailField()
+    address = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} - {self.company}"
