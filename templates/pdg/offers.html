@@ -1,0 +1,207 @@
+{% extends 'pdg/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.css">
+<link rel="stylesheet" href="{% static 'styles/pdg/offers.css'%}">
+{% endblock %}
+
+{% block offers_active %}activate{% endblock %}
+<link rel="stylesheet" href="{% static 'styles/pdg/restaurants.css' %}">
+{% block content %}
+<div class="main bg-white" >
+  <nav class="navbar navbar-expand px-1 bg-basic">
+      <h6 class="fw-bold">
+          Offers management
+      </h6>
+     <div class="navbar-collapse collapse">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item dropdown">
+              <a href="" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
+                  <img src="{% static 'images/téléchargement.jpg' %}" class="avatar  img-fluid rounded-circle border border-dark" alt="">
+              </a>
+          </li>
+        </ul>
+     </div>
+  </nav>
+
+  <main class="content px-3 py-1">
+    <div class="container mt-2 mb-4">
+      <div class="d-flex justify-content-between align-items-start mb-3">
+        <div class="d-flex align-items-center" id="list">
+          <h6 class="me-3" id="All-btn">All</h6>
+          <h6 class="me-3" id="active-btn">Active</h6>
+          <h6 class="me-3" id="upcoming-btn">Upcoming</h6>
+          <h6 class="me-3" id="expired-btn">Expired</h6>
+        </div>
+        <a href="{% url 'add_offer' %}" id="btn">Add<span>+</span></a>
+      </div>
+
+      <div class="table-responsive " id="All">
+        <table id="All-table" class="table table-striped border" style="width:100%">
+          <thead>
+              <tr>
+                <th>name</th>
+                <th>start</th>
+                <th>end</th>
+                <th>per</th>
+                <th>status</th>
+                <th>uses</th>
+                <th>Ops</th>
+              </tr>
+          </thead>
+          <tbody>
+            <tr>
+                <td>Weekend Sextood Special</td>
+                <td>07/03/2025</td>
+                <td>20/03/2025</td>
+                <td>10%</td>
+                <td><span class="badge text-success">Active</span></td>
+                <td>20</td>
+                <td class="d-flex justify-content-evenly align-items-center">
+                    <a href="" class="text-success"><i class="fa-solid fa-pen"></i></a>
+                    <a href="#" class="text-danger"><i class="fa-solid fa-trash"></i></a>
+                 </td>
+            </tr>
+            <tr>
+                <td>Buy One Get One Free Pizza</td>
+                <td>01/04/2025</td>
+                <td>09/04/2025</td>
+                <td>BOGO</td>
+                <td><span class="badge text-primary">Upcoming</span></td>
+                <td>-</td>
+                <td class="d-flex justify-content-evenly align-items-center">
+                    <a href="" class="text-success"><i class="fa-solid fa-pen"></i></a>
+                    <a href="#" class="text-danger"><i class="fa-solid fa-trash"></i></a> 
+                 </td>
+            </tr>
+
+            <tr>
+                <td>Happy hour drink</td>
+                <td>01/03/2025</td>
+                <td>30/03/2025</td>
+                <td>50%</td>
+                <td><span class="badge text-danger">Expired</span></td>
+                <td>100</td>
+                <td class="d-flex justify-content-evenly align-items-center">
+                    <a href="" class="text-success"><i class="fa-solid fa-pen"></i></a>
+                    <a href="#" class="text-danger"><i class="fa-solid fa-trash"></i></a> 
+                 </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+
+
+      <div class="table-responsive " id="Active">
+        <table id="active-table" class="table table-striped border" style="width:100%">
+          <thead>
+              <tr>
+                <th>name</th>
+                <th>start</th>
+                <th>end</th>
+                <th>per</th>
+                <th>status</th>
+                <th>uses</th>
+                <th>Ops</th>
+              </tr>
+          </thead>
+          <tbody>
+            <tr>
+                <td>Weekend Sextood Special</td>
+                <td>07/03/2025</td>
+                <td>20/03/2025</td>
+                <td>10%</td>
+                <td><span class="badge text-success">Active</span></td>
+                <td>20</td>
+                <td class="d-flex justify-content-evenly align-items-center">
+                    <a href="" class="text-success"><i class="fa-solid fa-pen"></i></a>
+                    <a href="#" class="text-danger"><i class="fa-solid fa-trash"></i></a>
+                 </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+
+      <div class="table-responsive " id="upcoming">
+        <table id="upcoming-table" class="table table-striped border" style="width:100%">
+          <thead>
+              <tr>
+                <th>name</th>
+                <th>start</th>
+                <th>end</th>
+                <th>per</th>
+                <th>status</th>
+                <th>uses</th>
+                <th>Ops</th>
+              </tr>
+          </thead>
+          <tbody>
+            <tr>
+                <td>Buy One Get One Free Pizza</td>
+                <td>01/04/2025</td>
+                <td>09/04/2025</td>
+                <td>BOGO</td>
+                <td><span class="badge text-primary">Upcoming</span></td>
+                <td>-</td>
+                <td class="d-flex justify-content-evenly align-items-center">
+                    <a href="" class="text-success"><i class="fa-solid fa-pen"></i></a>
+                    <a href="#" class="text-danger"><i class="fa-solid fa-trash"></i></a> 
+                 </td>
+            </tr>
+
+            
+
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-responsive " id="expired">
+        <table id="expired-table" class="table table-striped border" style="width:100%">
+          <thead>
+              <tr>
+                <th>name</th>
+                <th>start</th>
+                <th>end</th>
+                <th>per</th>
+                <th>status</th>
+                <th>uses</th>
+                <th>Ops</th>
+              </tr>
+          </thead>
+          <tbody>
+            <tr>
+                <td>Happy hour drink</td>
+                <td>01/03/2025</td>
+                <td>30/03/2025</td>
+                <td>50%</td>
+                <td><span class="badge text-danger">Expired</span></td>
+                <td>100</td>
+                <td class="d-flex justify-content-evenly align-items-center">
+                    <a href="" class="text-success"><i class="fa-solid fa-pen"></i></a>
+                    <a href="#" class="text-danger"><i class="fa-solid fa-trash"></i></a> 
+                 </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+</div>
+     
+
+      
+  </main>
+</div>
+ 
+<script defer src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script defer src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+<script defer src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.js"></script>
+<script defer src="{% static 'js/pdg/offers.js' %}"></script>
+
+{% endblock %}

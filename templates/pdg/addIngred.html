@@ -1,0 +1,21 @@
+{% extends 'pdg/baseform.html' %}
+{% load static%}
+{% block extra_css %}
+
+{% endblock %}
+
+
+{% block titlee %}
+   <h4 class="form-title">Add an ingredient</h4>
+{% endblock %}
+{% block content %}
+<form method="post" class="w-100">
+    {% csrf_token %}
+    {{ form.as_p }}
+  
+    <div class="d-flex justify-content-between mt-3">
+      <a href="{% url 'ingredients' %}" class="btn btn-outline btn1_color">Cancel</a>
+      <button type="submit" class="btn btn2_color">Add</button>
+    </div>
+  </form>
+{% endblock %}

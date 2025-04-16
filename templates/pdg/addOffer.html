@@ -1,0 +1,54 @@
+{% extends 'pdg/baseform.html' %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'styles/pdg/addMang.css' %}">
+{% endblock %}
+
+
+{% block titlee %}
+   <h4 class="form-title">Create new offer</h4>
+{% endblock %}
+
+{% block content %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="icon-input mb-3">
+          <i class="fa-solid fa-bullhorn"></i>
+          {{ form.name }}
+      </div>
+      <div class="row flex-column flex-md-row justify-content-between">
+        <div class="col-md-5 mb-4">
+          <div class="icon-input mb-3">
+            <i class="fa-solid fa-calendar-days"></i>
+            {{ form.start }}
+          </div>
+          <div class="icon-input mb-3">
+            <i class="fa-solid fa-star-of-life"></i>
+            <i class="fa-solid fa-star-of-life"></i>
+            <i class="fa-solid fa-star-of-life"></i>
+            {{ form.code }}
+          </div>
+        </div>
+      
+        <div class="col-md-5 mb-4">
+          <div class="icon-input mb-3">
+            <i class="fa-solid fa-calendar-days"></i>
+            {{ form.end }}
+          </div>
+          <div class="icon-input mb-3">
+            <i class="fa-solid fa-percent"></i>
+            {{ form.percentage }}
+          </div>
+        </div>
+      </div>
+      
+        <div class="icon-input mb-3">
+          <i class="fa-solid fa-circle-info"></i>
+          {{ form.description }}
+       </div>
+        <div class="buttons">
+          <a href="{% url 'offers' %}" class="btn btn-outline btn1_color">Cancel</a>
+          <button type="submit" class="btn btn2_color">Add</button>
+      </div>
+    </form>
+{% endblock %}
