@@ -1,0 +1,60 @@
+:root{
+    --mainColor:#FA4516;
+    --secondColor:#F8E3A2;
+}
+.menu-img {
+    width: 10%;
+    height: 10%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+.add-btn{
+    background-color: var(--secondColor);
+    color: var(--mainColor);
+    margin-left: 3px;
+}
+.remove-btn {
+    background: none;
+    border: none;
+    color: red;
+    font-weight: bold;
+    cursor: pointer;
+}
+button.btn-color{
+    background-color: var(--mainColor);
+    color: white;
+}
+button.btn-color:hover{
+    background-color: var(--secondColor);
+    color: var(--mainColor);
+
+}   
+
+.order-box-overlay {
+    position: fixed;
+    top: 10px;
+    bottom: 10px;
+    left: 10%;
+    width: 80%;
+    height: 100%;
+    background-color: rgba(255,255,255,0.95);
+    z-index: 1050;
+    display: none;
+    padding: 20px;
+    overflow-y: auto;
+    border-radius: 20px;
+    
+  }
+  
+
+.order-box-overlay.show {
+    display: block;
+}
+.order-box {
+    border-radius: 20px;
+    border: 2px solid #eee;
+    box-shadow: 3px #eee;
+    padding: 20px;
+    height: 60vh;
+}
+  

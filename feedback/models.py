@@ -1,6 +1,6 @@
 from django.db import models
-from restaurant.models import Restaurant
-from core.models import Client
+from restaurant.models import *
+
 
 class Review(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)

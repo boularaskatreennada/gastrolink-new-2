@@ -6,8 +6,9 @@
 .navbar{
     background-color: white;
     box-shadow:0 0 2rem 0 rgba(33, 37,41 , .1) ;
-    height: 5%;
+    padding: 0.3rem 1.5rem;
 }
+
 .navbar-expand .navbar-collapse{
     min-width: 200px;
 }
@@ -51,4 +52,16 @@ div#restlist{
     align-items: stretch;
     gap: 0.5rem;
 }
+}
+.expense-actions a, .expense-actions button {
+    font-size: 0.9rem;
+}
+.expense-amount {
+    font-weight: 500;
+    color: #d32f2f; /* Red for expenses */
+}
+.category-badge {
+    font-size: 0.75rem;
+    padding: 3px 8px;
+    border-radius: 12px;
 }

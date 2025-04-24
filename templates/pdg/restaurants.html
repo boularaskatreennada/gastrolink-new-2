@@ -11,8 +11,9 @@
 
 {% block content %}
 <div class="main bg-white">
-  <nav class="navbar navbar-expand px-1 py-1 bg-basic">
+  <nav class="navbar navbar-expand bg-basic d-flex justify-content-between">
     <h6 class="fw-bold">Restaurants Management</h6>
+    <p>{{ request.session.display_username }}</p>
   </nav>
 
   <main class="content px-3 py-1">
@@ -50,7 +51,13 @@
             <tr>
               <td>{{ restaurant.name }}</td>
               <td>{{ restaurant.address }}</td>
-              <td>{{ restaurant.manager.name }}</td>
+              <td>
+                {% if restaurant.manager %}
+                  <span>{{ restaurant.manager.user.get_full_name }}</span>
+                {% else %}
+                  <span class="text-danger">No manager assigned</span>
+                {% endif %}
+              </td>
               <td>{{ restaurant.phone }}</td>
               <td>{{ restaurant.email }}</td>
               <td class="d-flex justify-content-between">

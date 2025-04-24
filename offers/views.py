@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
+
+from restaurant.decorators import pdg_required , manager_required
 from .models import Offer
 from .forms import OfferForm
 from .models import OfferStatus
-# List all offers
-# List all offers
+
+@pdg_required
 def offer_list(request):
     all_offers = Offer.objects.all()
     active_offers = Offer.objects.filter(status=OfferStatus.ACTIVE)
@@ -18,7 +20,7 @@ def offer_list(request):
     }
     return render(request, 'pdg/offers.html', context)
 
-# Add new offer
+@pdg_required
 def add_offer(request):
     if request.method == 'POST':
         form = OfferForm(request.POST)
@@ -29,7 +31,7 @@ def add_offer(request):
         form = OfferForm()
     return render(request, 'pdg/addOffer.html', {'form': form})
 
-# Edit offer
+@pdg_required
 def edit_offer(request, pk):
     offer = get_object_or_404(Offer, pk=pk)
     if request.method == 'POST':
@@ -41,7 +43,7 @@ def edit_offer(request, pk):
         form = OfferForm(instance=offer)
     return render(request, 'pdg/addOffer.html', {'form': form})
 
-# Delete offer
+@pdg_required
 def delete_offer(request, pk):
     offer = get_object_or_404(Offer, pk=pk)
     if request.method == 'POST':

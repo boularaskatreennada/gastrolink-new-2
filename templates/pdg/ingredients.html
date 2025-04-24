@@ -1,81 +1,43 @@
 {% extends 'pdg/base.html' %}
 {% load static %}
-
-{% block extra_css %}
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.css">
-<link rel="stylesheet" href="{% static 'styles/pdg/employee.css'%}">
-{% endblock %}
-
-
+{% block extra_css %}<link rel="stylesheet" href="{% static 'styles/pdg/employee.css' %}">{% endblock %}
 {% block menu_active %}activate{% endblock %}
 
 {% block content %}
-<div class="main bg-white" >
-  <nav class="navbar navbar-expand px-1 bg-basic">
-      <h6 class="fw-bold">
-          Ingredients management
-      </h6>
+<div class="main bg-white">
+  <nav class="navbar navbar-expand bg-basic d-flex justify-content-between">
+    <h6 class="fw-bold">Ingredients Management</h6>
+    <p>{{ request.session.display_username }}</p>
   </nav>
 
   <main class="content px-3 py-1">
     <div class="container mt-2 mb-4">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <div class="d-flex align-items-center">
-          <h6 class="me-3">Choose category</h6>
-          <!-- Filter Dropdown placed with the header -->
-          <select class="form-select w-auto" aria-label="City filter">
-            <option selected>All</option>
-            <option value="1">Fruits</option>
-            <option value="2">Vegetables</option>
-            <option value="3">Meats</option>
-          </select>
-        </div>
-        <a href="{% url 'add_ingredient' %}" id="btn">Add<span>+</span></a>
+      <div class="d-flex justify-content-between mb-3">
+        <h6>All Ingredients</h6>
+        <a href="{% url 'add_ingredient' %}" class="btn btn-primary">Add +</a>
       </div>
-
-      <!-- Add table-responsive wrapper to make the table responsive -->
-      <div class="table-responsive " id="restlist">
-        <table id="example" class="table table-striped border " style="width:100%">
-          <thead>
-              <tr>
-                  <th>name</th>
-                  <th>category</th>
-                  <th>supplier</th>
-                  <th>stock level</th>
-                  <th>operations</th>
-              </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Strawbery</td>
-              <td>Fruits</td>
-              <td>FreshFarm</td>
-              <td>Low</td>
-              <td class="d-flex justify-content-evenly align-items-center">
-                <a href="" class="text-success"><i class="fa-solid fa-pen"></i></a>
-                <a href="#" class="text-danger"><i class="fa-solid fa-trash"></i></a> 
-             </td>
-            </tr>
-            <tr>
-                <td>Apple</td>
-                <td>Fruits</td>
-                <td>FreshFarm</td>
-                <td>midium</td>
-                <td class="d-flex justify-content-evenly align-items-center">
-                  <a href="" class="text-success"><i class="fa-solid fa-pen"></i></a>
-                  <a href="#" class="text-danger"><i class="fa-solid fa-trash"></i></a> 
-               </td>
-              </tr>
-          </tbody>
-        </table>
-      </div>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Unit</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ing in ingredients %}
+          <tr>
+            <td>{{ ing.name }}</td>
+            <td>{{ ing.unit }}</td>
+            <td>
+              <a href="{% url 'edit_ingredient' ing.id %}" class="text-success"><i class="fa fa-pen"></i></a>
+              <a href="{% url 'delete_ingredient' ing.id %}" class="text-danger ms-2"><i class="fa fa-trash"></i></a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </main>
 </div>
- 
-<script defer src="https://code.jquery.com/jquery-3.7.1.js"></script>
-<script defer src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
-<script defer src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.js"></script>
-<script defer src="{% static 'js/pdg/rest.js' %}"></script>
 {% endblock %}

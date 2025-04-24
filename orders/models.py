@@ -1,7 +1,6 @@
 from django.db import models
 from restaurant.models import *
 from menu.models import Dish
-from core.models import Client
 
 
 class OrderStatus(models.TextChoices):

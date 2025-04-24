@@ -1,6 +1,5 @@
 from django.db import models
-from restaurant.models import Restaurant
-from core.models import Client
+from restaurant.models import *
 
 class TableStatus(models.TextChoices):
     FREE = 'free', 'Free'

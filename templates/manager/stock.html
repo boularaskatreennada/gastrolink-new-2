@@ -1,0 +1,99 @@
+{% extends 'manager/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.css">
+<link rel="stylesheet" href="{% static 'styles/pdg/employee.css'%}">
+{% endblock %}
+
+{% block stock_active%}activate{% endblock %}
+
+{% block content %}
+<div class="main bg-white" >
+  <nav class="navbar navbar-expand bg-basic d-flex justify-content-between">
+      <h6 class="fw-bold">
+          Stock management
+      </h6>
+      <p>{{ request.session.display_username }}</p>
+  </nav>
+
+  <main class="content px-3 py-1">
+    <div class="container mt-2 mb-4">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex align-items-center">
+          <h6 class="me-3" id="plats-btn">Plats</h6>
+          <h6 class="me-3" id="ingredients-btn">Ingredients</h6>
+        </div>
+      </div>
+
+      <!-- Add table-responsive wrapper to make the table responsive -->
+      <div class="table-responsive " id="plats">
+        <table id="plats-table" class="table table-striped border" style="width:100%">
+          <thead>
+              <tr>
+                  <th>name</th>
+                  <th>daily allocation</th>
+                  <th>remaining quantity</th>
+                  <th>Status</th>
+              </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Cesar salad</td>
+              <td>10</td>
+              <td>5</td>
+              <td class="text-success">Available</td>
+            </tr>
+            <tr>
+                <td>Burger</td>
+                <td>20</td>
+                <td>0</td>
+                <td class="text-danger">Unavailable</td>
+              </tr>
+                
+
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-responsive  d-none " id="ingredients">
+        <table id="ingredients-table" class="table table-striped border" style="width:100%">
+          <thead>
+              <tr>
+                  <th>name</th>
+                  <th>total quantity</th>
+                  <th>current quantity</th>
+                  <th>unit</th>
+                  <th>status</th>
+              </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Lettuce</td>
+              <td>20 </td>
+              <td>10</td>
+              <td>Kg</td>
+              <td class="color-success">Available</td>
+            </tr>
+            <tr>
+              <td>Eggs</td>
+              <td>70 </td>
+              <td>0</td>
+              <td>p</td>
+              <td class="color-danger">Unavailable</td>
+              </tr>
+         
+          </tbody>
+        </table>
+      </div>
+  </main>
+</div>
+ 
+<script defer src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script defer src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+<script defer src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.js"></script>
+<script defer src="{% static 'js/manager/stock.js' %}"></script>
+{% endblock %}

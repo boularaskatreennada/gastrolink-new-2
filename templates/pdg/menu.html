@@ -1,106 +1,77 @@
 {% extends 'pdg/base.html' %}
 {% load static %}
-
 {% block extra_css %}
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.css">
-<link rel="stylesheet" href="{% static 'styles/pdg/menu.css'%}">
+<link rel="stylesheet" href="{% static 'styles/pdg/menu.css' %}">
 {% endblock %}
-
-
 {% block menu_active %}activate{% endblock %}
+
 {% block content %}
-<div class="main bg-white" >
-    <nav class="navbar navbar-expand px-1 bg-basic">
-        <h6 class="fw-bold">
-            Menu management
-        </h6>
-      
-    </nav>
-    <main class="content px-3 py-1">
-        <div class="container mt-2 mb-4">
-            <div class="d-flex flex-column-reverse flex-md-row justify-content-between align-items-start align-items-md-center mb-3 gap-2"">
-                <div>
-                    <p class="fw-bold">Choose category</p>
-                   <div class="dropdown">
-                       <button class="btn btn-default dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                        {% if selected_category_id %}
-                        {{ categories|get_selected:selected_category_id }}
-                        {% else %}
-                          Choose category
-                         {% endif %}
-                      </button>
-                      <ul class="dropdown-menu">
-                        {% for cat in categories %}
-                        <li><a class="dropdown-item" href="?category={{ cat.id }}">{{ cat.category }}</a></li>
-                        {% endfor %}
-                      </ul>
-                   </div>
-
-                </div>
-                <div  class="d-flex mb-3">
-                    <a href="{% url 'ingredients' %}"><button class="btn" id="btn1" >Ingredients</button></a>
-                    <a href="{% url 'add_plate' %}"><button class="btn" id="btn2">Add plate</button></a>
-                </div>
-            </div>
-            <div class="card mb-3">
-                <div class="card-body">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <!-- Image + Nom du plat -->
-                        <div class="d-flex align-items-center gap-3">
-                            <img src="{% static 'images/aaa.jpg' %}" class="rounded-circle img-fluid" alt="Dish" style="width: 50px; height: 50px; object-fit: cover;">
-                            <h5 class="mb-0 text-center">Garlic Butter Shrimp Fettuccine</h5>
-                        </div>
-                
-                        <h5 class="fw-bold flex-grow-1 text-center">$12</h5>
-                
-                        <div class="d-flex flex-column-reverse flex-md-row justify-content-between align-items-center gap-2">
-                            <div class="p-3">
-                                <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#recipe1">
-                                    Show Recipe <i class="fa-solid fa-caret-down"></i>
-                                </button>
-                            </div>
-                            <div class="d-flex">
-                                <i class="fa-solid fa-file-pen"></i>
-                                <i class="fa-solid fa-trash"></i>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-                
-                
-                <div id="recipe1" class="collapse">
-                    <div class="row p-3">
-                        <div class="col-md-6">
-                            <h6 class="fw-bold">Ingredients</h6>
-                            <ul>
-                                <li>250g fettuccine</li>
-                                <li>300g shrimp (peeled & deveined)</li>
-                                <li>3 cloves garlic (minced)</li>
-                                <li>30g butter</li>
-                                <li>100ml heavy cream</li>
-                                <li>50g Parmesan cheese (grated)</li>
-                                <li>1 tbsp olive oil</li>
-                                <li>Salt, pepper, fresh parsley (chopped)</li>
-                            </ul>
-                        </div>
-                        <div class="col-md-6">
-                            <h6 class="fw-bold">Recipe</h6>
-                            <ol class="text-danger">
-                                <li>Cook the fettuccine according to package instructions.</li>
-                                <li>Melt butter with olive oil, sauté garlic.</li>
-                                <li>Add shrimp, season, cook until pink.</li>
-                                <li>Pour in cream & Parmesan, stir.</li>
-                                <li>Add pasta, toss, garnish with parsley.</li>
-                                <li>Serve hot with extra Parmesan.</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+<div class="main bg-white">
+  <nav class="navbar navbar-expand bg-basic d-flex justify-content-between">
+    <h6 class="fw-bold">Menu Management</h6>
+    <p>{{ request.session.display_username }}</p>
+  </nav>
+  <main class="content px-3 py-1">
+    <div class="container mt-2 mb-4">
+      <div class="d-flex justify-content-between mb-3">
+        <div>
+          <p class="fw-bold">Choose category</p>
+          <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle" type="button" data-bs-toggle="dropdown">
+              {% with selected_name=None %}
+                {% for cat in categories %}
+                  {% if cat.id == selected_category_id %}
+                    {% with cat.category as selected_name %}
+                    {% endwith %}
+                  {% endif %}
+                {% endfor %}
+                {{ selected_name|default:"Choose category" }}
+              {% endwith %}
+            </button>
+          
+            <ul class="dropdown-menu">
+              {% for cat in categories %}
+                <li><a class="dropdown-item" href="?category={{ cat.id }}">{{ cat.category }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+          
         </div>
-    </main>    
+        <div class="d-flex">
+          <a href="{% url 'ingredients' %}" class="btn me-2">Ingredients</a>
+          <a href="{% url 'add_plate' %}" class="btn btn-primary">Add plate</a>
+        </div>
+      </div>
+
+      {% for dish in dishes %}
+      <div class="card mb-3">
+        <div class="card-body d-flex justify-content-between align-items-center">
+          <div class="d-flex align-items-center gap-3">
+            <img src="{{ dish.image.url }}" class="rounded-circle" alt="Dish" style="width: 50px; height: 50px; object-fit: cover;">
+            <h5 class="mb-0">{{ dish.name }}</h5>
+          </div>
+          <h5 class="fw-bold text-center">${{ dish.price }}</h5>
+          <div class="d-flex">
+            <a href="{% url 'edit_plate' dish.id %}" class="text-success me-2"><i class="fa-solid fa-file-pen"></i></a>
+            <a href="{% url 'delete_plate' dish.id %}" class="text-danger"><i class="fa-solid fa-trash"></i></a>
+          </div>
+        </div>
+        <div class="collapse" id="recipe{{ dish.id }}">
+          <div class="p-3">
+            <h6>Ingredients</h6>
+            <ul>
+              {% for item in dish.dishingredient_set.all %}
+              <li>{{ item.ingredient.name }} - {{ item.quantity }} {{ item.ingredient.unit }}</li>
+              {% endfor %}
+            </ul>
+            <h6>Recipe</h6>
+            <p>{{ dish.description }}</p>
+          </div>
+        </div>
+      </div>
+      {% empty %}<p>No dishes available.</p>{% endfor %}
+    </div>
+  </main>
+</div>
 {% endblock %}

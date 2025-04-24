@@ -6,7 +6,7 @@
 
 
 {% block titlee %}
-   <h4 class="form-title">Create new offer</h4>
+<h4 class="form-title">{% if form.instance.pk %}Edit{% else %}Add New{% endif %} Offer</h4>
 {% endblock %}
 
 {% block content %}

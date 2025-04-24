@@ -1,0 +1,67 @@
+{% extends 'manager/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.css">
+<link rel="stylesheet" href="{% static 'styles/pdg/restau.css'%}">
+{% endblock %}
+
+
+{% block orders_active %}activate{% endblock %}
+
+{% block content %}
+<div class="main bg-white" >
+  <nav class="navbar navbar-expand bg-basic d-flex justify-content-between">
+      <h6 class="fw-bold">
+          Orders management
+      </h6>
+      <p>{{ request.session.display_username }}</p>
+  </nav>
+
+  <main class="content px-3 py-1">
+    <div class="container mt-2 mb-4">
+      <div class="d-flex justify-content-end align-items-center mb-3">
+        <a href="" id="btn">Add new <span>+</span></a>
+      </div>
+
+      <!-- Add table-responsive wrapper to make the table responsive -->
+      <div class="table-responsive " id="restlist">
+        <table id="example" class="table table-striped border " style="width:100%">
+          <thead>
+              <tr>
+                  <th>Number</th>
+                  <th>Date</th>
+                  <th>Total amount</th>
+                  <th>Suppliers</th>
+                  <th> </th>
+              </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>59</td>
+              <td>08/04/2025</td>
+              <td>$100</td>
+              <td>VegetGroc</td>
+              <td><a href="#" class="text-primary">Details</a></td>
+            </tr>
+            <tr>
+                <td>58</td>
+                <td>07/04/2025</td>
+                <td>$120</td>
+                <td>GreenFarm</td>
+                <td><a href="#" class="text-primary">Details</a></td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+  </main>
+</div>
+ 
+<script defer src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script defer src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+<script defer src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.js"></script>
+<script defer src="{% static 'js/pdg/rest.js' %}"></script>
+{% endblock %}

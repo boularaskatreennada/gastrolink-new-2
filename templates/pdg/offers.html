@@ -11,8 +11,9 @@
 <link rel="stylesheet" href="{% static 'styles/pdg/restaurants.css' %}">
 {% block content %}
 <div class="main bg-white" >
-  <nav class="navbar navbar-expand px-1 bg-basic">
-      <h6 class="fw-bold">Offers management</h6>
+  <nav class="navbar navbar-expand  bg-basic d-flex justify-content-between">
+    <h6 class="fw-bold">Offers Management</h6>
+    <p>{{ request.session.display_username }}</p>
   </nav>
 
   <main class="content px-3 py-1">
