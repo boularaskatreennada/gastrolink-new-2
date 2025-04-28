@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Confirmer la commande - GastroLink</title>
+  <link rel="stylesheet" href="{% static 'styles/client/confirmation.css' %}"> <!-- CSS plus léger conseillé -->
+</head>
+<body>
+  <div class="confirmation-page">
+    <h1>Récapitulatif de la commande</h1>
+    <div id="order-details"></div>
+    <button id="confirm-order-btn">Confirmer la commande</button>
+  </div>
+
+  <script>
+    // Récupération du CSRF token
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+
+    // Récupérer les données du localStorage
+    const orderData = JSON.parse(localStorage.getItem('orderData'));
+    const detailsContainer = document.getElementById('order-details');
+
+    if (!orderData) {
+      window.location.href = '/menu/';
+    } else {
+      let html = '<ul>';
+      orderData.items.forEach(item => {
+        html += `<li>${item.quantity} x ${item.name} — ${item.price} $</li>`;
+      });
+      html += `</ul><p>Total : ${orderData.total} $</p>`;
+      detailsContainer.innerHTML = html;
+    }
+
+    // Envoyer la commande au serveur
+    document.getElementById('confirm-order-btn').addEventListener('click', () => {
+      fetch('/orders/place_order/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrftoken
+        },
+        body: JSON.stringify(orderData)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erreur lors de la confirmation');
+        }
+        return response.json();
+      })
+      .then(data => {
+        alert('Commande confirmée ! Numéro : ' + data.order_id);
+        localStorage.removeItem('orderData');
+        window.location.href = '/menu/';
+      })
+      .catch(error => {
+        alert('Une erreur est survenue. Veuillez réessayer.');
+        console.error(error);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -20,3 +20,51 @@ def manager_required(view_func):
             return HttpResponseForbidden("You are not allowed here.")
         return view_func(request, *args, **kwargs)
     return _wrapped_view
+
+
+def chef_required(view_func):
+    @wraps(view_func)
+    @login_required
+    def _wrapped_view(request, *args, **kwargs):
+        if request.user.user_type != 'CHEF':
+            return HttpResponseForbidden("You are not allowed here.")
+        return view_func(request, *args, **kwargs)
+    return _wrapped_view
+    
+def waiter_required(view_func):
+    @wraps(view_func)
+    @login_required
+    def _wrapped_view(request, *args, **kwargs):
+        if request.user.user_type != 'WAITER':
+            return HttpResponseForbidden("You are not allowed here.")
+        return view_func(request, *args, **kwargs)
+    return _wrapped_view
+
+
+def delivery_required(view_func):
+    @wraps(view_func)
+    @login_required
+    def _wrapped_view(request, *args, **kwargs):
+        if request.user.user_type != 'DELIVERY':
+            return HttpResponseForbidden("You are not allowed here.")
+        return view_func(request, *args, **kwargs)
+    return _wrapped_view
+
+def client_required(view_func):
+    @wraps(view_func)
+    @login_required
+    def _wrapped_view(request, *args, **kwargs):
+        if request.user.user_type != 'CLIENT':
+            return HttpResponseForbidden("You are not allowed here.")
+        return view_func(request, *args, **kwargs)
+    return _wrapped_view
+
+def all_roles_required(view_func):
+    @wraps(view_func)
+    @login_required
+    def _wrapped_view(request, *args, **kwargs):
+        if request.user.user_type not in ['PDG', 'MANAGER', 'CHEF', 'WAITER', 'CLIENT']:
+            return HttpResponseForbidden("You are not allowed here.")
+        return view_func(request, *args, **kwargs)
+    return _wrapped_view
+

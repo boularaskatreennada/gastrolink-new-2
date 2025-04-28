@@ -3,7 +3,7 @@
     --secondColor:#F8E3A2;
 }
 body {
-    height:fit-content;
+    height: 110vh;
     display: flex;
     justify-content: center;
     align-items: start;
@@ -38,6 +38,7 @@ body {
 .form-select {
     margin-bottom: 15px;
     border-radius: 10px;
+    height: 2rem;
 }
 .text-area{
     height:6rem;

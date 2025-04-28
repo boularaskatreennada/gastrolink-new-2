@@ -1,0 +1,139 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Client - GastroLink</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'styles/client/menu.css' %}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href=""><img src="{% static 'assets/gastro.png' %}" alt="GastroLink" class="logo"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="">Menu</a></li>
+                    <li class="nav-item"><a class="nav-link" href="">Offers</a></li>
+                    <li class="nav-item"><a class="nav-link" href="">Add Feedback</a></li>
+                    <li class="nav-item"><a class="nav-link" href="">Reservation</a></li>
+                </ul>
+                <a href="" class="btn-signin">Sign In</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="content-wrapper">
+            <div class="menu-content">
+                <div class="container">
+                    <div class="menu-container">
+                        <!-- Sidebar à gauche -->
+                        <div class="sidebar">
+                            <div class="sidebar-section">
+                                <div class="sidebar-title">Location</div>
+                                <select class="form-select restaurant-select" aria-label="Select restaurant">
+                                    <option selected>Ali Mendjli, Constantine</option>
+                                    <option>Centre Ville, Constantine</option>
+                                    <option>Ibn Badis, Constantine</option>
+                                    <option>El Khroub</option>
+                                    <option>Aéroport Mohamed Boudiaf</option>
+                                </select>
+                                <div class="restaurant-address mt-2">123 Rue Ali Mendjli, Constantine</div>
+                            </div>
+                            
+                            <div class="sidebar-section">
+                                <div class="sidebar-title">Categories</div>
+                                <div class="category-item active">Salads</div>
+                                <div class="category-item">Soups</div>
+                                <div class="category-item">Grilled Specialties</div>
+                                <div class="category-item">Seafood</div>
+                                <div class="category-item">Pasta</div>
+                                <div class="category-item">Sandwiches</div>
+                                <div class="category-item">Pizza</div>
+                                <div class="category-item">Desserts</div>
+                                <div class="category-item">Drinks</div>
+                            </div>
+                        </div>
+
+                        <!-- Menu à droite -->
+                        <div class="menu-items">
+                            <div class="menu-card">
+                                <img src="{% static 'images/salads/caesar.jpg' %}" alt="Cæesar Salad" class="menu-item-img">
+                                <div class="menu-item-content">
+                                    <div class="menu-item-name">Cæesar Salad</div>
+                                    <div class="menu-item-desc">Romaine, parmesan, croutons, Caesar dressing</div>
+                                    <div class="menu-item-footer">
+                                        <span class="menu-item-price">10 $</span>
+                                        <button class="add-btn" data-id="1" data-name="Cæesar Salad" data-price="10">Add</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="menu-card">
+                                <img src="{% static 'images/salads/cobb.jpg' %}" alt="Cobb Salad" class="menu-item-img">
+                                <div class="menu-item-content">
+                                    <div class="menu-item-name">Cobb Salad</div>
+                                    <div class="menu-item-desc">Chicken, bacon, eggs, avocado, blue cheese</div>
+                                    <div class="menu-item-footer">
+                                        <span class="menu-item-price">12 $</span>
+                                        <button class="add-btn" data-id="2" data-name="Cobb Salad" data-price="12">Add</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="menu-card">
+                                <img src="{% static 'images/salads/beet.jpg' %}" alt="Beet Salad" class="menu-item-img">
+                                <div class="menu-item-content">
+                                    <div class="menu-item-name">Beet and Goat Cheese Salad</div>
+                                    <div class="menu-item-desc">Roasted beets, goat cheese, walnuts, arugula</div>
+                                    <div class="menu-item-footer">
+                                        <span class="menu-item-price">11 $</span>
+                                        <button class="add-btn" data-id="3" data-name="Beet and Goat Cheese Salad" data-price="11">Add</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panier vertical à droite -->
+        <div class="order-summary">
+            <div class="order-header">
+                <h5 class="m-0">Your Order</h5>
+                <div class="order-count">0</div>
+            </div>
+            
+            <div class="order-items">
+                <div class="empty-cart">Your cart is empty</div>
+            </div>
+            
+            <textarea class="order-note" placeholder="Any special instructions?"></textarea>
+            
+            <div class="order-total">
+                <span>Total:</span>
+                <span>0 $</span>
+            </div>
+            
+            <button class="submit-btn" disabled>Place Order</button>
+        </div>
+    </div>
+
+    <!-- Bouton toggle pour mobile -->
+    <button class="cart-toggle">
+        🛒
+        <span class="cart-badge">0</span>
+    </button>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/client/order.js' %}"></script>
+    
+</body>
+</html>

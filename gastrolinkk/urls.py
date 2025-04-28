@@ -26,7 +26,6 @@ urlpatterns = [
     path('reservations/', include('reservations.urls')),
     path('menu/', include('menu.urls')),
     path('orders/', include('orders.urls')),
-    path('stock/', include('stock.urls')),
     path('offers/', include('offers.urls')),
     path('finance/', include('finance.urls')),
     path('feedback/', include('feedback.urls')),

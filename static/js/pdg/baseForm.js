@@ -1,7 +1,7 @@
 document.getElementById('id_photo').addEventListener('change', function () {
   const file = this.files[0];
   const preview = document.getElementById('previewImage');
-  const icon = document.getElementById('uploadIcon'); // if present
+  const icon = document.getElementById('uploadIcon');
 
   if (file) {
       const reader = new FileReader();

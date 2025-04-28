@@ -1,3 +1,2 @@
-	
 new DataTable('#example');
 

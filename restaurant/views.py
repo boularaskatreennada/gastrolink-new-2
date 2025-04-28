@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
 from .forms import *
-from .decorators import pdg_required, manager_required
+from .decorators import *
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
@@ -26,7 +26,7 @@ def custom_login(request):
                 return redirect('pdg_dashboard')
             elif user.user_type == 'MANAGER':
                 return redirect('manager_dashboard')
-            ''' elif user.user_type == 'CHEF':
+            elif user.user_type == 'CHEF':
                 return redirect('chef_dashboard')
             elif user.user_type == 'SERVER':
                 return redirect('server_dashboard')
@@ -35,7 +35,7 @@ def custom_login(request):
             elif user.user_type == 'CLIENT':
                 return redirect('client_dashboard')
             elif user.user_type == 'SUPPLIER':
-                return redirect('supplier_dashboard')'''
+                return redirect('supplier_dashboard')
         else:
             return render(request, 'login.html', {'error': 'Invalid credentials'})
     
@@ -54,6 +54,38 @@ def manager_dashboard(request):
    
     restaurant = request.user.manager.restaurant
     return render(request, 'manager/dashboard.html', {'restaurant': restaurant})
+
+@chef_required
+def chef_dashboard(request):
+    if request.user.user_type != 'CHEF':
+        return redirect('login')
+   
+    restaurant = request.user.manager.restaurant
+    return render(request, 'chef/ordersListChef.html', {'restaurant': restaurant})
+
+@waiter_required
+def waiter_dashboard(request):
+    if request.user.user_type != 'SERVER':
+        return redirect('login')
+   
+    restaurant = request.user.manager.restaurant
+    return render(request, 'serveur/ordersList.html', {'restaurant': restaurant})
+
+@delivery_required
+def delivery_dashboard(request):
+    if request.user.user_type != 'DELIVERY':
+        return redirect('login')
+   
+    restaurant = request.user.manager.restaurant
+    return render(request, 'livreur/DeliveryOrders.html', {'restaurant': restaurant})
+
+
+
+
+
+
+
+
 
 @pdg_required
 def restaurant_list(request): 
@@ -229,36 +261,53 @@ def delete_supplier(request, pk):
 
 
 
+
 @manager_required
 def employee_manager_list(request):
-    waiters = Server.objects.all()
-    chefs = Chef.objects.all()
-    DeliveryPersons = DeliveryPerson.objects.all()
+    manager = Manager.objects.get(user=request.user)
+    restaurant = manager.restaurant
+
+    waiters = Server.objects.filter(restaurant=restaurant)
+    chefs = Chef.objects.filter(restaurant=restaurant)
+    delivery_persons = DeliveryPerson.objects.filter(restaurant=restaurant)
+
     return render(request, 'manager/employee.html', {
         'waiters': waiters,
         'chefs': chefs,
-        'DeliveryPersons': DeliveryPersons
+        'DeliveryPersons': delivery_persons
     })
+
 
 @manager_required
 def add_staff_employee(request):
     form = StaffEmployeeForm(request.POST or None)
-    
+
     if request.method == 'POST' and form.is_valid():
         data = form.cleaned_data
-        role = data['role']
-        model = {'chef': Chef, 'server': Server, 'delivery': DeliveryPerson}.get(role)
 
-        if model:
-            model.objects.create(
-                name=data['name'],
-                email=data['email'],
-                phone=data['phone'],
-                password=data['password'],
-                restaurant=data['restaurant'],
-                status=data['status']
-            )
-            return redirect('employee_manager_list')
+        user = User.objects.create_user(
+         username=data['email'],
+         email=data['email'],
+         first_name=data['name'].split(' ')[0],
+         last_name=' '.join(data['name'].split(' ')[1:]) if len(data['name'].split(' ')) > 1 else '',
+         phone=data['phone'],
+         user_type=data['role'],  
+         password=data['password'],
+        )
+
+        # Get the current manager's restaurant
+        manager = get_object_or_404(Manager, user=request.user)
+        restaurant = manager.restaurant
+
+        # Create the appropriate staff object
+        if data['role'] == 'chef':
+            Chef.objects.create(user=user, restaurant=restaurant, status=data['status'])
+        elif data['role'] == 'server':
+            Server.objects.create(user=user, restaurant=restaurant, status=data['status'])
+        elif data['role'] == 'delivery':
+            DeliveryPerson.objects.create(user=user, restaurant=restaurant, status=data['status'])
+
+        return redirect('employee_manager_list')
 
     return render(request, 'manager/addEmployee.html', {'form': form})
 
@@ -267,37 +316,54 @@ def edit_staff_employee(request, role, pk):
     model = {'chef': Chef, 'server': Server, 'delivery': DeliveryPerson}.get(role)
     instance = get_object_or_404(model, pk=pk)
 
+    # Get the current manager's restaurant
+    manager = get_object_or_404(Manager, user=request.user)
+    if instance.restaurant != manager.restaurant:
+        return HttpResponseForbidden("You do not have permission to edit this employee.")
+
     initial_data = {
-        'name': instance.name,
-        'email': instance.email,
-        'phone': instance.phone,
-        'password': instance.password,
-        'restaurant': instance.restaurant,
-        'status': instance.status,
+        'name': instance.user.get_full_name(),
+        'email': instance.user.email,
+        'phone': instance.user.phone,
         'role': role,
+        'status': instance.status,
     }
 
     form = StaffEmployeeForm(request.POST or None, initial=initial_data)
+
     if request.method == 'POST' and form.is_valid():
         data = form.cleaned_data
-        instance.name = data['name']
-        instance.email = data['email']
-        instance.phone = data['phone']
-        instance.password = data['password']
-        instance.restaurant = data['restaurant']
+        user = instance.user
+        user.first_name = data['name'].split(' ')[0]
+        user.last_name = ' '.join(data['name'].split(' ')[1:]) if len(data['name'].split(' ')) > 1 else ''
+        user.email = data['email']
+        user.phone = data['phone']
+        if data['password']:
+            user.set_password(data['password'])
+        user.save()
+
         instance.status = data['status']
         instance.save()
+
         return redirect('employee_manager_list')
 
     return render(request, 'manager/addEmployee.html', {'form': form, 'employee': instance})
+
+from django.http import HttpResponseForbidden
 
 @manager_required
 def delete_staff_employee(request, role, pk):
     model = {'chef': Chef, 'server': Server, 'delivery': DeliveryPerson}.get(role)
     employee = get_object_or_404(model, pk=pk)
 
+    # Get the current manager's restaurant
+    manager = get_object_or_404(Manager, user=request.user)
+    if employee.restaurant != manager.restaurant:
+        return HttpResponseForbidden("You do not have permission to delete this employee.")
+
     if request.method == 'POST':
+        employee.user.delete()  # Delete the associated User too
         employee.delete()
         return redirect('employee_manager_list')
 
-    return render(request, 'manager/employee.html', {'employee': employee})
+    return render(request, 'manager/confirm_delete.html', {'employee': employee})

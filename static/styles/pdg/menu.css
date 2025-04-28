@@ -16,7 +16,7 @@
     width: 40px;
 }
 #btn1,
-#btn2 {
+#btn2{
     padding: 0.5rem 1rem; 
     border: none; 
     border-radius: 0.25rem; 
@@ -24,11 +24,13 @@
     text-decoration: none;
     margin-left: .2rem;
 }
-#btn1:hover{
+#btn1:hover,
+#add-plate.btn{
     background-color: #F8E3A2;
     color: #FA4516;
 }
-#btn1{
+#btn1,
+#add-plate.btn:hover{
     background-color: var(--mainColor);
     color: white;
 }
@@ -94,4 +96,12 @@ h6#price{
         width: 100%;
         margin-left: 0;
     }
+}
+#add-plate.btn,
+#ingred.btn{
+    height: 2.5rem;
+}
+#ingred.btn:hover{
+    color: var(--mainColor);
+
 }

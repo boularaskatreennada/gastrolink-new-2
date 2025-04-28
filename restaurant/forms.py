@@ -192,11 +192,6 @@ class StaffEmployeeForm(forms.Form):
         required=False,
         widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'})
     )
-    restaurant = forms.ModelChoiceField(
-        queryset=Restaurant.objects.all(),
-        required=False,
-        widget=forms.Select(attrs={'class': 'form-control'})
-    )
     status = forms.ChoiceField(
         choices=STATUS_CHOICES,
         required=False,
@@ -210,5 +205,4 @@ class StaffEmployeeForm(forms.Form):
 
         if role in ['chef', 'server', 'delivery']:
             self.fields['password'].required = True
-            self.fields['restaurant'].required = True
             self.fields['status'].required = True

@@ -46,15 +46,16 @@
           <tbody>
             <tr>
               {% for waiter in waiters %}
-              <td>{{ waiter.name }}</td>
-              <td style="text-align: left;">{{ waiter.phone }}</td>
-              <td>{{ waiter.email }}</td>
+              <td>{{ waiter.user.get_full_name }}</td>
+              <td>{{ waiter.user.phone }}</td>
+              <td>{{ waiter.user.email }}</td>
               <td>{{ waiter.status }}</td>
               <td>{{ waiter.created_at }}</td>
               
               <td class="d-flex justify-content-evenly align-items-center">
-                <a href="{% url 'edit_staff' role='server' pk=waiter.id %}" class="text-success">edit <i class="fa-solid fa-user-pen"></i></a>
-                <form action="{% url 'delete_staff' role='server' pk=waiter.id %}" method="post" onsubmit="return confirm('Are you sure?');">
+                <a href="{% url 'edit_staff' role='server' pk=waiter.pk %}" class="text-success">edit <i class="fa-solid fa-user-pen"></i></a>
+                <form action="{% url 'delete_staff' role='server' pk=waiter.pk %}" method="post" onsubmit="return confirm('Are you sure?');">
+                
                   {% csrf_token %}
                   <button type="submit" class="btn btn-link text-danger p-0 m-0">Delete</button>
                 </form>
@@ -81,15 +82,15 @@
         <tbody>
           <tr>
             {% for chef in chefs %}
-            <td>{{ chef.name }}</td>
-            <td style="text-align: left;">{{ chef.phone }}</td>
-            <td>{{ chef.email }}</td>
+            <td>{{ chef.user.get_full_name }}</td>
+            <td>{{ chef.user.phone }}</td>
+            <td>{{ chef.user.email }}</td>
             <td>{{ chef.status }}</td>
             <td>{{ chef.created_at }}</td>
             
             <td class="d-flex justify-content-evenly align-items-center">
-              <a href="{% url 'edit_staff' role='chef' pk=chef.id %}" class="text-success">edit <i class="fa-solid fa-user-pen"></i></a>
-              <form action="{% url 'delete_staff' role='chef' pk=chef.id %}" method="post" onsubmit="return confirm('Are you sure?');">
+              <a href="{% url 'edit_staff' role='chef' pk=chef.user.pk %}" class="text-success">edit <i class="fa-solid fa-user-pen"></i></a>
+              <form action="{% url 'delete_staff' role='chef' pk=chef.user.pk %}" method="post" onsubmit="return confirm('Are you sure?');">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-link text-danger p-0 m-0">Delete</button>
               </form>
@@ -116,15 +117,15 @@
         <tbody>
           <tr>
             {% for DeliveryPerson in DeliveryPersons %}
-            <td>{{ DeliveryPerson.name }}</td>
-            <td style="text-align: left;">{{ DeliveryPerson.phone }}</td>
-            <td>{{ DeliveryPerson.email }}</td>
+            <td>{{ DeliveryPerson.user.get_full_name }}</td>
+            <td>{{ DeliveryPerson.user.phone }}</td>
+            <td>{{ DeliveryPerson.user.email }}</td>
             <td>{{ DeliveryPerson.status }}</td>
             <td>{{ DeliveryPerson.created_at }}</td>
             
             <td class="d-flex justify-content-evenly align-items-center">
-              <a href="{% url 'edit_staff' role='delivery' pk=DeliveryPerson.id %}" class="text-success">edit <i class="fa-solid fa-user-pen"></i></a>
-              <form action="{% url 'delete_staff' role='delivery' pk=DeliveryPerson.id %}" method="post" onsubmit="return confirm('Are you sure?');">
+              <a href="{% url 'edit_staff' role='delivery' pk=delivery_person.user.pk %}" class="text-success">edit <i class="fa-solid fa-user-pen"></i></a>
+              <form action="{% url 'delete_staff' role='delivery' pk=delivery_person.user.pk %}" method="post" onsubmit="return confirm('Are you sure?');">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-link text-danger p-0 m-0">Delete</button>
               </form>

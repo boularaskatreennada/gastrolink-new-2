@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'reservations.apps.ReservationsConfig',
     'menu.apps.MenuConfig',
     'orders.apps.OrdersConfig',
-    'stock.apps.StockConfig',
     'offers.apps.OffersConfig',
     'finance.apps.FinanceConfig',
     'feedback.apps.FeedbackConfig',
