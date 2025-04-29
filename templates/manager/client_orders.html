@@ -1,0 +1,82 @@
+{% extends 'manager/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.css">
+<link rel="stylesheet" href="{% static 'styles/pdg/restau.css'%}">
+{% endblock %}
+
+{% block  clients_orders_active %}activate{% endblock %}
+
+{% block content %}
+<div class="main bg-white">
+  <nav class="navbar navbar-expand bg-basic d-flex justify-content-between">
+    <h6 class="fw-bold">Clients Orders</h6>
+    <h6 class="me-3">{{ request.session.display_username }}</h6>
+   
+  </nav>
+
+  <main class="content px-4 py-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <form method="get" class="d-flex align-items-center mb-4">
+        <label class="me-2">Select Date:</label>
+        <input type="date" name="date" value="{{ selected_date }}" class="form-control w-auto me-2">
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </form>
+
+    </div>
+
+    <div class="table-responsive mb-5">
+      {% if orders %}
+      <table id="expenses-table" class="table table-striped border" style="width:100%">
+        <thead>
+          <tr>
+              <th># Order ID</th>
+              <th>Client</th>
+              <th>Server</th>
+              <th>Status</th>
+              <th>Mode</th>
+              <th>Date</th>
+              <th>Dishes</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+          <tr>
+              <td>{{ order.id }}</td>
+              <td>{{ order.client.user.username }}</td>
+              <td>
+                {% if order.server %}
+                    {{ order.server.user.username }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </td>
+            
+              <td>{{ order.get_status_display }}</td>
+              <td>{{ order.get_mode_display }}</td>
+              <td>{{ order.order_date|date:"Y-m-d H:i" }}</td>
+              <td>
+                  <ul>
+                      {% for dish in order.orderdish_set.all %}
+                          <li>{{ dish.dish.name }} (x{{ dish.quantity }})</li>
+                      {% endfor %}
+                  </ul>
+              </td>
+          </tr>
+           {% endfor %}
+        </tbody>
+     </table>
+   {% else %}
+     <p>No orders found for this date.</p>
+   {% endif %}
+
+
+  </main>
+</div>
+
+<script defer src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script defer src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+<script defer src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.js"></script>
+<script src="{% static 'js/manager/expenses.js' %}"></script>
+{% endblock %}

@@ -1,5 +1,6 @@
 from django.db import models
 from restaurant.models import Restaurant
+from decimal import Decimal
 
 class MainMenu(models.Model):
     category = models.CharField(max_length=100)
@@ -101,6 +102,7 @@ class ShoppingListItem(models.Model):
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
 
     def save(self, *args, **kwargs):
-        # Calcul automatique du prix total lors de la sauvegarde
-        self.total_price = self.ingredient.price_per_unit * self.required_quantity
-        super().save(*args, **kwargs)
+
+      
+      self.total_price = self.ingredient.price_per_unit * Decimal(str(self.required_quantity))
+      super().save(*args, **kwargs)

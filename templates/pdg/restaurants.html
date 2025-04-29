@@ -13,7 +13,7 @@
 <div class="main bg-white">
   <nav class="navbar navbar-expand bg-basic d-flex justify-content-between">
     <h6 class="fw-bold">Restaurants Management</h6>
-    <p>{{ request.session.display_username }}</p>
+    <h6>{{ request.session.display_username }}</h6>
   </nav>
 
   <main class="content px-3 py-1">
@@ -61,7 +61,7 @@
               <td>{{ restaurant.phone }}</td>
               <td>{{ restaurant.email }}</td>
               <td class="d-flex justify-content-between">
-                <a href="" class="text-primary me-2">Informations</a>
+                <a href="{% url 'restaurant_information' restaurant.id %}" class="text-primary me-2">Informations</a>
                 <a href="{% url 'edit_restaurant' restaurant.id %}" class="text-success me-2">Edit</a>
                 <form action="{% url 'delete_restaurant' restaurant.id %}" method="post" onsubmit="return confirm('Are you sure?');">
                     {% csrf_token %}

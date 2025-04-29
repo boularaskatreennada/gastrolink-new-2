@@ -36,6 +36,12 @@
                     </a>
                 </li>
 
+                <li class="sidebar-item" id="{% block menu_active %}{% endblock %}">
+                    <a href="{% url 'menu' %}" class="sidebar-link">
+                    <i class='bx bxs-food-menu'></i>
+                    <span>Menu</span>
+                </a></li>
+                
                 <li class="sidebar-item" id="{% block restaurants_active %}{% endblock %}">
                     <a href="{% url 'restaurants' %}" class="sidebar-link">
                     <i class="fa-solid fa-utensils"></i>
@@ -48,11 +54,7 @@
                     <span>Employees</span>
                 </a></li>
 
-                <li class="sidebar-item" id="{% block menu_active %}{% endblock %}">
-                    <a href="{% url 'menu' %}" class="sidebar-link">
-                    <i class='bx bxs-food-menu'></i>
-                    <span>Menu</span>
-                </a></li>
+                
 
                 <li class="sidebar-item " id="{% block offers_active %}{% endblock %}">
                     <a href="{% url 'offers' %}" class="sidebar-link">
@@ -60,6 +62,7 @@
                     <span>Offers</span>
                 </a></li>
             </ul>
+            
             <div class="sidebar-footer">
                 <ul class="sidebar-nav">
                     <li class="sidebar-item">

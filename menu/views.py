@@ -1,5 +1,6 @@
 from collections import defaultdict
 from datetime import timezone
+import datetime
 from django.utils import timezone
 import json
 from django import forms
@@ -371,44 +372,63 @@ def remove_dish_from_daily_menu(request, daily_menu_dish_id):
 
 
 
+
 @manager_required
 def generate_shopping_list(request):
-    manager = get_object_or_404(Manager, user=request.user)
+    """Générer dynamiquement la liste d'achats basée sur le menu du jour"""
+    manager = Manager.objects.get(user=request.user)
     restaurant = manager.restaurant
-    daily_menu = get_object_or_404(DailyMenu, date=date.today(), restaurant=restaurant)
-    
-    ingredient_requirements = defaultdict(float)
-    unit_mapping = {}
-    
-    menu_dishes = DailyMenuDish.objects.filter(menu=daily_menu).select_related('dish')
-    
-    for menu_dish in menu_dishes:
-        dish_ingredients = DishIngredient.objects.filter(dish=menu_dish.dish).select_related('ingredient')
-        for di in dish_ingredients:
-            key = di.ingredient.id
-            ingredient_requirements[key] += di.quantity * menu_dish.initial_quantity
-            unit_mapping[key] = di.unit
-    
-    shopping_list, created = ShoppingList.objects.get_or_create(menu=daily_menu)
+
+    date_str = request.GET.get('date')
+    if date_str:
+        try:
+            selected_date = datetime.strptime(date_str, '%Y-%m-%d').date()
+        except ValueError:
+            selected_date = date.today()
+    else:
+        selected_date = date.today()
+
+    # Récupérer ou créer le DailyMenu pour cette date
+    daily_menu, _ = DailyMenu.objects.get_or_create(date=selected_date, restaurant=restaurant)
+
+    # Récupérer ou créer la ShoppingList associée
+    shopping_list, _ = ShoppingList.objects.get_or_create(menu=daily_menu)
+
+    # --- NOUVEAUTÉ : On supprime les anciens éléments pour recalculer proprement ---
     ShoppingListItem.objects.filter(shopping_list=shopping_list).delete()
-    
-    total_cost = 0  # Initialisation du coût total
-    
-    for ing_id, quantity in ingredient_requirements.items():
-        ingredient = Ingredient.objects.get(id=ing_id)
-        item = ShoppingListItem.objects.create(
+
+    # Calculer tous les ingrédients nécessaires
+    dish_entries = DailyMenuDish.objects.filter(menu=daily_menu)
+
+    ingredient_quantities = {}
+
+    for entry in dish_entries:
+        dish_ingredients = DishIngredient.objects.filter(dish=entry.dish)
+        for di in dish_ingredients:
+            key = (di.ingredient.id, di.unit)
+            quantity = di.quantity * entry.initial_quantity
+
+            if key in ingredient_quantities:
+                ingredient_quantities[key] += quantity
+            else:
+                ingredient_quantities[key] = quantity
+
+    # Recréer les ShoppingListItems
+    for (ingredient_id, unit), total_quantity in ingredient_quantities.items():
+        ingredient = Ingredient.objects.get(id=ingredient_id)
+        ShoppingListItem.objects.create(
             shopping_list=shopping_list,
             ingredient=ingredient,
-            required_quantity=quantity,
-            unit=unit_mapping[ing_id]
+            required_quantity=total_quantity,
+            unit=unit
         )
-        total_cost += item.total_price  # Ajout au coût total
-    
-    items = ShoppingListItem.objects.filter(shopping_list=shopping_list).select_related('ingredient')
-    
-    return render(request, 'manager/shopping_list.html', {
-        'daily_menu': daily_menu,
-        'shopping_list': shopping_list,
+
+    items = ShoppingListItem.objects.filter(shopping_list=shopping_list)
+
+    total_cost = sum(item.total_price for item in items)
+
+    return render(request, 'manager/orders.html', {
         'items': items,
-        'total_cost': total_cost  # Passage du coût total au template
+        'total_cost': total_cost,
+        'selected_date': selected_date
     })

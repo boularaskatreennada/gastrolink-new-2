@@ -5,7 +5,7 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.bootstrap5.css">
-<link rel="stylesheet" href="{% static 'styles/pdg/restau.css'%}">
+<link rel="stylesheet" href="{% static 'styles/pdg/ingredients.css'%}">
 {% endblock %}
 
 
@@ -17,13 +17,16 @@
       <h6 class="fw-bold">
           Orders management
       </h6>
-      <p>{{ request.session.display_username }}</p>
+      <h6>{{ request.session.display_username }}</h6>
   </nav>
 
   <main class="content px-3 py-1">
     <div class="container mt-2 mb-4">
       <div class="d-flex justify-content-end align-items-center mb-3">
-        <a href="" id="btn">Add new <span>+</span></a>
+        <input type="date" id="menuDatePicker" class="form-control" 
+        style="width: 250px; margin-right: 10px;" 
+        value="{{ selected_date|date:'Y-m-d' }}">
+ 
       </div>
 
       <!-- Add table-responsive wrapper to make the table responsive -->
@@ -52,7 +55,7 @@
         <tfoot>
             <tr class="table-active">
                 <td colspan="4" class="text-end"><strong>Total Cost:</strong></td>
-                <td><strong>{{ total_cost|floatformat:2 }} DH</strong></td>
+                <td><strong>{{ total_cost|floatformat:2 }} $</strong></td>
             </tr>
         </tfoot>
         </table>
@@ -64,5 +67,20 @@
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <script defer src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
 <script defer src="https://cdn.datatables.net/2.2.2/js/dataTables.bootstrap5.js"></script>
-<script defer src="{% static 'js/pdg/rest.js' %}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    new DataTable('#example');
+    
+    const datePicker = document.getElementById('menuDatePicker');
+    datePicker.addEventListener('change', function() {
+        const selectedDate = datePicker.value;
+        if (selectedDate) {
+            window.location.href = `/menu/manager/orders/?date=${selectedDate}`;
+        }
+    });
+});
+
+</script>
 {% endblock %}
+
+
