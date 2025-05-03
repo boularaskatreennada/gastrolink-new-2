@@ -35,7 +35,7 @@ def waiter_required(view_func):
     @wraps(view_func)
     @login_required
     def _wrapped_view(request, *args, **kwargs):
-        if request.user.user_type != 'WAITER':
+        if request.user.user_type.upper() != 'SERVER':
             return HttpResponseForbidden("You are not allowed here.")
         return view_func(request, *args, **kwargs)
     return _wrapped_view

@@ -235,6 +235,14 @@ def delete_category(request, pk):
 
 
 
+def recipes_list(request):
+    # Récupère tous les plats
+    dishes = Dish.objects.prefetch_related('dishingredient_set__ingredient').all()
+
+    return render(request, 'chef/recipie.html', {
+        'dishes': dishes,
+    })
+
 
 
 
